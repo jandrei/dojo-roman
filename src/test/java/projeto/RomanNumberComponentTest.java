@@ -49,6 +49,17 @@ public class RomanNumberComponentTest {
 	}
 	
 	@Test
+	public void test_repeats() {
+		collector.checkThat("letter A, repeats 5 expecteds empty", toRoman.repeat(5, "A")	 , is("" ));
+		collector.checkThat("letter A, repeats 3 expecteds AAA", toRoman.repeat(3, "A")	 , is("AAA" ));
+	}
+	@Test
+	public void test_repeats_illegal_argument() {
+		exceptionExpected.expect(IllegalArgumentException.class);
+		collector.checkThat("letter A, repeats -1 expecteds empty", toRoman.repeat(-1, "A")	 , is("" ));
+	}
+	
+	@Test
 	public void test_roman_positive_less_or_equal_3000() {
 		collector.checkThat("number 1		= I"	    , toRoman.convertToRoman(1)	 , is("I" ));
 		collector.checkThat("number 4 		= IV"	    , toRoman.convertToRoman(4)	 , is("IV" ));

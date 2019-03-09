@@ -149,7 +149,7 @@ public class RomanNumberComponent {
 	 * @param character
 	 * @return character param concats N times
 	 */
-	private String repeat(Integer repeats, String character) {
+	public String repeat(Integer repeats, String character) {
 		if (repeats > 3) {
 			return "";
 		}
