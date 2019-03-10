@@ -145,6 +145,8 @@ public class RomanNumberComponent {
 
 	/**
 	 * Repeat character of param N times.
+	 * If repeats was greater than three, than return empty.
+	 * 
 	 * @param repeats
 	 * @param character
 	 * @return character param concats N times

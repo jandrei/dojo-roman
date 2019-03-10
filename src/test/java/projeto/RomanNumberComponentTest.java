@@ -2,6 +2,10 @@ package projeto;
 
 import static org.hamcrest.core.Is.is;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,6 +15,8 @@ import org.junit.rules.ExpectedException;
 public class RomanNumberComponentTest {
 
 	private RomanNumberComponent toRoman;
+	
+	private Map<Integer, String> mapUseCases;
 	
 	@Rule
 	public ErrorCollector collector = new ErrorCollector();
@@ -22,6 +28,38 @@ public class RomanNumberComponentTest {
 	@Before
 	public void init() {
 		toRoman = new RomanNumberComponent();
+		
+		mapUseCases = new HashMap<Integer, String>();
+		mapUseCases.put(1, "I");
+		mapUseCases.put(4, "IV");
+		mapUseCases.put(5, "V");
+		mapUseCases.put(9, "IX");
+		mapUseCases.put(10, "X");
+		mapUseCases.put(11, "XI");
+		mapUseCases.put(39, "XXXIX");
+		mapUseCases.put(40, "XL");
+		mapUseCases.put(41, "XLI");
+		mapUseCases.put(50, "L");
+		mapUseCases.put(51, "LI");
+		mapUseCases.put(90, "XC");
+		mapUseCases.put(99, "XCIX");
+		mapUseCases.put(100, "C");
+		mapUseCases.put(111, "CXI");
+		mapUseCases.put(199, "CXCIX");
+		mapUseCases.put(400, "CD");
+		mapUseCases.put(494, "CDXCIV");
+		mapUseCases.put(500, "D");
+		mapUseCases.put(591, "DXCI");
+		mapUseCases.put(900, "CM");
+		mapUseCases.put(999, "CMXCIX");
+		mapUseCases.put(1000, "M");
+		mapUseCases.put(1234, "MCCXXXIV");
+		mapUseCases.put(1434, "MCDXXXIV");
+		mapUseCases.put(1539, "MDXXXIX");
+		mapUseCases.put(1999, "MCMXCIX");
+		mapUseCases.put(2000, "MM");
+		mapUseCases.put(2001, "MMI");
+		mapUseCases.put(3000, "MMM");
 	}
 
 	@Test
@@ -60,37 +98,10 @@ public class RomanNumberComponentTest {
 	}
 	
 	@Test
-	public void test_roman_positive_less_or_equal_3000() {
-		collector.checkThat("number 1		= I"	    , toRoman.convertToRoman(1)	 , is("I" ));
-		collector.checkThat("number 4 		= IV"	    , toRoman.convertToRoman(4)	 , is("IV" ));
-		collector.checkThat("number 5 		= V"	    , toRoman.convertToRoman(5)	 , is("V" ));
-		collector.checkThat("number 9 		= IX"	    , toRoman.convertToRoman(9)	 , is("IX" ));
-		collector.checkThat("number 10 		= X"	    , toRoman.convertToRoman(10)	 , is("X" ));
-		collector.checkThat("number 11 		= XI"	    , toRoman.convertToRoman(11)	 , is("XI" ));
-		collector.checkThat("number 39 		= XXXIX"    , toRoman.convertToRoman(39)	 , is("XXXIX" ));
-		collector.checkThat("number 40 		= XL"	    , toRoman.convertToRoman(40)	 , is("XL" ));
-		collector.checkThat("number 41 		= XLI"	    , toRoman.convertToRoman(41)	 , is("XLI" ));
-		collector.checkThat("number 50 		= L"	    , toRoman.convertToRoman(50)	 , is("L" ));
-		collector.checkThat("number 51 		= LI"	    , toRoman.convertToRoman(51)	 , is("LI" ));
-		collector.checkThat("number 90 		= XC"	    , toRoman.convertToRoman(90)	 , is("XC" ));
-		collector.checkThat("number 99 		= XCIX"	    , toRoman.convertToRoman(99)	 , is("XCIX" ));
-		collector.checkThat("number 100 	= C"	    , toRoman.convertToRoman(100)	 , is("C" ));
-		collector.checkThat("number 111 	= CXI"	    , toRoman.convertToRoman(111)	 , is("CXI" ));
-		collector.checkThat("number 199 	= CXCIX"    , toRoman.convertToRoman(199)	 , is("CXCIX" ));
-		collector.checkThat("number 400 	= CD"	    , toRoman.convertToRoman(400)	 , is("CD" ));
-		collector.checkThat("number 494 	= CDXCIV"	, toRoman.convertToRoman(494)	 , is("CDXCIV" ));
-		collector.checkThat("number 500 	= D"	    , toRoman.convertToRoman(500)	 , is("D" ));
-		collector.checkThat("number 591 	= DXCI"	    , toRoman.convertToRoman(591)	 , is("DXCI" ));
-		collector.checkThat("number 900 	= CM"	    , toRoman.convertToRoman(900)	 , is("CM" ));
-		collector.checkThat("number 999 	= CMXCIX"	, toRoman.convertToRoman(999)	 , is("CMXCIX" ));
-		collector.checkThat("number 1000 	= M"	    , toRoman.convertToRoman(1000)	 , is("M" ));
-		collector.checkThat("number 1234 	= MCCXXXIV"	, toRoman.convertToRoman(1234)	 , is("MCCXXXIV" ));
-		collector.checkThat("number 1434 	= MCDXXXIV"	, toRoman.convertToRoman(1434)	 , is("MCDXXXIV" ));
-		collector.checkThat("number 1539 	= MDXXXIX"	, toRoman.convertToRoman(1539)	 , is("MDXXXIX" ));
-		collector.checkThat("number 1999 	= MCMXCIX"	, toRoman.convertToRoman(1999)	 , is("MCMXCIX" ));
-		collector.checkThat("number 2000 	= MM"	    , toRoman.convertToRoman(2000)	 , is("MM" ));
-		collector.checkThat("number 2001 	= MMI"	    , toRoman.convertToRoman(2001)	 , is("MMI" ));
-		collector.checkThat("number 3000 	= MMM"	    , toRoman.convertToRoman(3000)	 , is("MMM" ));
+	public void test_number_to_roman_positive_less_or_equal_3000() {
+		for(Entry<Integer, String> itemUseCase : mapUseCases.entrySet()) {
+			collector.checkThat(String.format("number convertToRoman %d	= %s", itemUseCase.getKey(), itemUseCase.getValue()), toRoman.convertToRoman(itemUseCase.getKey()), is(itemUseCase.getValue()));	
+		}
 	}
 	
 	@Test
@@ -101,14 +112,10 @@ public class RomanNumberComponentTest {
 	}
 	
 	@Test
-	public void test_numbers_positive_less_or_equal_3000() {
-		collector.checkThat("number I		= 1"	    , toRoman.convertToNumber("I")	, is(1));
-		collector.checkThat("number IV 		= 4"     	, toRoman.convertToNumber("IV")	, is(4 ));
-		collector.checkThat("number V 		= 5"    	, toRoman.convertToNumber("V")	, is(5 ));
-		collector.checkThat("number IX 		= 9"     	, toRoman.convertToNumber("IX")	, is(9 ));
-		collector.checkThat("number X 		= 10"    	, toRoman.convertToNumber("X")	, is(10 ));
-		collector.checkThat("number XI 		= 11"	    , toRoman.convertToNumber("XI")	, is(11 ));
-		collector.checkThat("number CX 		= 110"	    , toRoman.convertToNumber("CX")	, is(110 ));
+	public void test_roman_to_numbers_positive_less_or_equal_3000() {
+		for(Entry<Integer, String> itemUseCase : mapUseCases.entrySet()) {
+			collector.checkThat(String.format("roman convertToNumber %s = 	%d", itemUseCase.getValue(), itemUseCase.getKey()), toRoman.convertToNumber(itemUseCase.getValue()), is(itemUseCase.getKey()));	
+		}
 	}
 	
 }
