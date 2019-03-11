@@ -25,7 +25,7 @@ O algoritmo é simples e foi utilizado testando letra a letra da string passada 
  6. obtendo o número correspondente converto para a string em romano pela lógica do sistema para comparar com o parâmetro informado.
  7. se os parâmetros e o resultado da conversão não foram iguais então um número romano inválido foi informado por exemplo IIII poderia ser 4, mas não é válido. 
   
-### Como executar o projeto por linha de comandoo
+### Como executar o projeto por linha de comando
 Instale o maven versão 3.x, entre no diretório do projeto e execute **mvn test**.
 
 ### Como executar o projeto no eclipse
