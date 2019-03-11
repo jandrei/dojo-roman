@@ -2,10 +2,13 @@ package projeto;
 
 import static org.hamcrest.core.Is.is;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,8 +34,11 @@ public class RomanNumberComponentTest {
 		
 		mapUseCases = new HashMap<Integer, String>();
 		mapUseCases.put(1, "I");
+		mapUseCases.put(2, "II");
+		mapUseCases.put(3, "III");
 		mapUseCases.put(4, "IV");
 		mapUseCases.put(5, "V");
+		mapUseCases.put(6, "VI");
 		mapUseCases.put(9, "IX");
 		mapUseCases.put(10, "X");
 		mapUseCases.put(11, "XI");
@@ -86,16 +92,6 @@ public class RomanNumberComponentTest {
 		toRoman.convertToRoman(3001);
 	}
 	
-	@Test
-	public void test_repeats() {
-		collector.checkThat("letter A, repeats 5 expecteds empty", toRoman.repeat(5, "A")	 , is("" ));
-		collector.checkThat("letter A, repeats 3 expecteds AAA", toRoman.repeat(3, "A")	 , is("AAA" ));
-	}
-	@Test
-	public void test_repeats_illegal_argument() {
-		exceptionExpected.expect(IllegalArgumentException.class);
-		collector.checkThat("letter A, repeats -1 expecteds empty", toRoman.repeat(-1, "A")	 , is("" ));
-	}
 	
 	@Test
 	public void test_number_to_roman_positive_less_or_equal_3000() {
@@ -105,12 +101,29 @@ public class RomanNumberComponentTest {
 	}
 	
 	@Test
-	public void test_roman_to_numbers_invalids() {
-		exceptionExpected.expect(IllegalArgumentException.class);
-		//110 expression wrong
-		toRoman.convertToNumber("CIIIIIIIIII");
+	public void test_number_to_roman_positive_1539() {
+		collector.checkThat("number convertToRoman 1539	= MDXXXIXs", toRoman.convertToRoman(1539), is("MDXXXIX"));	
+		
 	}
 	
+	@Test
+	public void test_roman_to_numbers_invalids() {
+		List<String> paramsList = Arrays.asList(
+				null,
+				"",
+				"CIIIIIIIIII", 
+				"A", "B", "F", "G","Z");
+		
+		paramsList.forEach(param -> {
+			try {
+				toRoman.convertToNumber(param);
+				Assert.fail(String.format("Test roman numeral \"%s\" don't fail.", param));
+			}catch(Exception illegalEx) {
+				Assert.assertEquals("Fail on test of invalid numbers.", IllegalArgumentException.class, illegalEx.getClass());
+			}
+		});
+	}
+
 	@Test
 	public void test_roman_to_numbers_positive_less_or_equal_3000() {
 		for(Entry<Integer, String> itemUseCase : mapUseCases.entrySet()) {

@@ -1,38 +1,17 @@
 package projeto;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-
 public class RomanNumberComponent {
-	
-	/**
-	 * Aux variable to key roman numbers.
-	 */
-	private static final Map<Integer, String> numbersBaseToRoman = new HashMap<Integer, String>();
-	private static final Map<String, Integer> romanBaseToNumbers;
-	
-	static {
-		numbersBaseToRoman.put(1, "I");
-		numbersBaseToRoman.put(4, "IV");
-		numbersBaseToRoman.put(5, "V");
-		numbersBaseToRoman.put(9, "IX");
-		numbersBaseToRoman.put(10, "X");
-		numbersBaseToRoman.put(40, "XL");
-		numbersBaseToRoman.put(50, "L");
-		numbersBaseToRoman.put(90, "XC");
-		numbersBaseToRoman.put(100, "C");
-		numbersBaseToRoman.put(400, "CD");
-		numbersBaseToRoman.put(500, "D");
-		numbersBaseToRoman.put(900, "CM");
-		numbersBaseToRoman.put(1000, "M");
-		
-		romanBaseToNumbers = numbersBaseToRoman.entrySet().stream()
-							.collect(Collectors.toMap(Entry::getValue, Entry::getKey));
+
+	enum Numeral {
+		M(1000), CM(900), D(500), CD(400), C(100), XC(90), L(50), XL(40), X(10), IX(9), V(5), IV(4), I(1);
+
+		Integer number;
+
+		Numeral(Integer number) {
+			this.number = number;
+		}
 	}
-	
+
 	/**
 	 * Convert any number positive between 1 and 3000 in to roman value
 	 * 
@@ -45,21 +24,37 @@ public class RomanNumberComponent {
 			throw new IllegalArgumentException("Only numbers between 1 and 3000 are accepted.");
 		}
 
-		String romanReturn =  thousand(number) 
-							+ century(number) 
-							+ tens(number)
-							+ unit(number);
+		String romanReturn = "";
+
+		for (Numeral numeral : Numeral.values()) {
+			while (number >= numeral.number) {
+				number -= numeral.number;
+				romanReturn += numeral.toString();
+			}
+		}
 
 		return romanReturn;
 	}
-	
+
 	public Integer convertToNumber(String number) {
+		if (number == null || number.trim().isEmpty()) {
+			throw new IllegalArgumentException("Invalid parameter for conversion, must be a valid roman numeral.");
+		}
+		number = number.toUpperCase().trim();
+
+		String[] characters = number.split("");
+		for (String character : characters) {
+			if (Numeral.valueOf(character) == null) {
+				throw new IllegalArgumentException(String.format("Invalid roman letter \"%s\".", character));
+			}
+		}
+
 		int result = 0;
-		for (int positionChatAt = 0; positionChatAt < number.length(); positionChatAt++) {
-			int characterValue = romanBaseToNumbers.get(String.valueOf(number.charAt(positionChatAt)));
-			
+		for (int positionChatAt = 0; positionChatAt < characters.length; positionChatAt++) {
+			Integer characterValue = Numeral.valueOf(characters[positionChatAt]).number;
+
 			if (positionChatAt + 1 < number.length()) {
-				int characterValue2 = romanBaseToNumbers.get(String.valueOf(number.charAt(positionChatAt + 1)));
+				Integer characterValue2 = Numeral.valueOf(characters[positionChatAt + 1]).number;
 
 				if (characterValue >= characterValue2) {
 					result += characterValue;
@@ -72,91 +67,13 @@ public class RomanNumberComponent {
 				positionChatAt++;
 			}
 		}
-		
+
 		String verification = this.convertToRoman(result);
 		if (!verification.equals(number)) {
 			throw new IllegalArgumentException(String.format("Invalid roman number."));
 		}
-		
+
 		return result;
 	}
 
-	/**
-	 * Return unit part in roman of a number
-	 * @param number
-	 * @return roman value
-	 */
-	private String unit(Integer number) {
-		Integer units = ((number % 100) % 10);
-
-		return getRomanToMapOrRepeat(units, units, "X");
-	}
-
-	/**
-	 * Return tens part in roman of a number
-	 * @param number
-	 * @return roman value
-	 */
-	private String tens(Integer number) {
-		Integer quantidadeDeDezenas = (number % 100) / 10;
-		Integer dezena = quantidadeDeDezenas * 10;
-
-		return getRomanToMapOrRepeat(dezena, quantidadeDeDezenas, "X");
-	}
-
-	/**
-	 * Return century part in roman of a number
-	 * @param number
-	 * @return roman value
-	 */
-	private String century(Integer number) {
-		Integer qtdCenturys = (number % 1000) / 100;
-		Integer centena = qtdCenturys * 100;
-
-		return getRomanToMapOrRepeat(centena, qtdCenturys, "C");
-	}
-
-	/**
-	 * Return thousand part in roman of a number
-	 * @param number
-	 * @return roman value
-	 */
-	private String thousand(Integer number) {
-		Integer qtdThousand = (number % 10000) / 1000;
-		Integer thousand = qtdThousand * 1000;
-
-		return getRomanToMapOrRepeat(thousand, qtdThousand, "M");
-	}
-
-	/**
-	 * Return roman number from {@link RomanNumberComponent#numbersBaseToRoman} or repeat character of param
-	 * @param baseRomanOnMap
-	 * @param repeats
-	 * @param letter
-	 * @return roman value
-	 */
-	private String getRomanToMapOrRepeat(Integer baseRomanOnMap, Integer repeats, String letter) {
-		if (numbersBaseToRoman.containsKey(baseRomanOnMap)) {
-			return numbersBaseToRoman.get(baseRomanOnMap);
-		}
-
-		return repeat(repeats, letter);
-	}
-
-	/**
-	 * Repeat character of param N times.
-	 * If repeats was greater than three, than return empty.
-	 * 
-	 * @param repeats
-	 * @param character
-	 * @return character param concats N times
-	 */
-	public String repeat(Integer repeats, String character) {
-		if (repeats > 3) {
-			return "";
-		}
-
-		return String.join("", Collections.nCopies(repeats, character));
-	}
-	
 }
