@@ -1,28 +1,31 @@
 # Dojo java para conversão de  inteiros para numeral > romano e romano > inteiro
 
-### Lógica do algoritmo.
-
-#### Conversão para Romanos
-O algoritmo foi criado utilizando cálculos para extrair os milhares, centenas, dezenas e unidades do número informado por parâmetro.
+### Conversão para Romanos
+O algoritmo foi criado utilizando enum ordenado do valor 1000 para o 1 com valores e letras apenas do números principais do algorítmo.
 
 Passos para implementação:
- 1. divido o componente em 4 métodos, para tratar milhar, centena, dezena e unidade.
- 2. cada método extrai sua unidade correspondente.
- 3. tenta obter do mapa de unidades seu número expecífico.
- 4. se não encontra no mapa, repete a letra da unidade correspondente por 3;
- 5. em um dos testes unitários o sistema havia impresso mais que 3 repetições, então precisei adicionar um tratamento para ele.
- 6. criei testes unitários para cobrir os números chave para a conversão e alguns intermediários que utilizam esses números chaves que considerei limites superiores e inferiores.
-
-Por exemplo: 
-número chave 40, procurei testar o 40, 39 e 41.
-número chave 100, procurei testar o 100, 99 e 101.
-Adicionei mais testes pois testando os números chave os testes passavam, mas quando adicionava testes aleatórios alguns testes não passavam e precisei trata-los para que o conversor funcionasse corretamente.
-
-#### Conversão para Inteiros
-
-
+ 1. o método de conversão principal valida se o número é válido.
+ 2. itera os valores do enum testando se o parâmetro é maior ou igual ao valor do item do enum. 
+ 3. se for verdadeiro decrementa do parâmetro o valor encontrado e concatena a letra correspondente.
+ 4. continua no laço até zerar o valor, 
+ Por exemplo, 
+ para gerar o número 3 ele desconta de 1 em 1 formando III. 
+ para gerar o número 30 ele desconta de 10 em 10 até ficar XXX, e assim por diante. 
  
-### Como executar o projeto por linha de comando
+Adicionei mais testes pois testando os números chave eles passavam, mas quando adicionava testes aleatórios alguns testes não passavam e precisei rever a lógica utilizada inicialmente.
+
+
+### Conversão para Inteiros
+O algoritmo é simples e foi utilizado testando letra a letra da string passada por parâmetro.
+ 1. é validado que todas letras do número existem no enumerador de romanos conhecido, se não existir o sistema lança exceção.
+ 2. obtenho a primeira letra e o valor correspondente no enum, se necessário obtenho a segunda letra.
+ 3. se a primeira for **maior** que a segunda como no caso do número 6(VI) apenas soma-se os valores V+I > 5+1 = 6
+ 4. se a primeira for **menor** que a segunda como o caso do número 40(XL) apenas subtrai-se os valores L - X > 50-10 = 40
+ 5. a soma continua até a última letra parâmetro.
+ 6. obtendo o número correspondente converto para a string em romano pela lógica do sistema para comparar com o parâmetro informado.
+ 7. se os parâmetros e o resultado da conversão não foram iguais então um número romano inválido foi informado por exemplo IIII poderia ser 4, mas não é válido. 
+  
+### Como executar o projeto por linha de comandoo
 Instale o maven versão 3.x, entre no diretório do projeto e execute **mvn test**.
 
 ### Como executar o projeto no eclipse
