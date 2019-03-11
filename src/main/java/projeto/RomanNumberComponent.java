@@ -36,6 +36,12 @@ public class RomanNumberComponent {
 		return romanReturn;
 	}
 
+	/**
+	 * onvert any roman numeral positive between 1 and 3000 in to Integer value
+	 * 
+	 * @param number
+	 * @return
+	 */
 	public Integer convertToNumber(String number) {
 		if (number == null || number.trim().isEmpty()) {
 			throw new IllegalArgumentException("Invalid parameter for conversion, must be a valid roman numeral.");
